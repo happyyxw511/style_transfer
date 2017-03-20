@@ -49,3 +49,7 @@ def _pool_layer(input):
 
 def preprocess(image):
     return image - MEAN_PIXEL
+
+
+def unpreprocess(image):
+    return image + MEAN_PIXEL
