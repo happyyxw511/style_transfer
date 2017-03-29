@@ -23,7 +23,7 @@ def style_and_content_loss(style_image,
     net = vgg.net(vgg_model_path, preprocessed_image)
     # numpy array in the feed_dict are transformed to tensor by tensorflow
     style_pre = np.array([style_image])
-    with tf.Session() as sess:
+    with tf.device('/gpu:0'), tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
         # precompute the features for the style image
         for layer_name in STYLE_LAYER_NAMES:
             feature = net[layer_name].eval(feed_dict={image: style_pre})

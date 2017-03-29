@@ -10,7 +10,7 @@ def optimize(loss,
              shoud_print=False,
              save_path='saver/fns.ckpt'):
     batch_shape = (batch_size,256,256,3)
-    with tf.Session() as sess:
+    with tf.device('/gpu:0'), tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
         optimizer = tf.train.AdadeltaOptimizer(learning_rate).minimize(loss)
         sess.run(tf.global_variables_initializer())
         for epoch in xrange(epochs):
