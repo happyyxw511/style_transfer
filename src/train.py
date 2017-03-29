@@ -15,7 +15,10 @@ def optimize(loss,
         sess.run(tf.global_variables_initializer())
         for epoch in xrange(epochs):
             num_examples = len(content_image_paths)
+            np.random.shuffle(content_image_paths)
+            print content_image_paths[:10]
             iterations = 0
+            infered_losses = []
             # the input should have been randomized
             while iterations * batch_size < num_examples:
                 curr = iterations*batch_size
@@ -27,7 +30,9 @@ def optimize(loss,
                 optimizer.run(feed_dict={'X_content_images:0': X_batch})
                 saver = tf.train.Saver()
                 saver.save(sess, save_path)
-
                 if shoud_print:
                     inferred_loss = sess.run([loss], feed_dict={'X_content_images:0': X_batch})
-                    print inferred_loss
+                    infered_losses.append(inferred_loss)
+                    if np.mod(iterations, 10) == 0:
+                        print np.mean(inferred_loss)
+                        infered_losses = []

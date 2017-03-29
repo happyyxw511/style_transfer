@@ -42,7 +42,7 @@ def style_and_content_loss(style_image,
         preds_pre = vgg.preprocess(preds)
         preds_net = vgg.net(vgg_model_path, preds_pre)
         content_feature_size = _tensor_size(content_feature)*batch_size
-        content_loss = 2*tf.nn.l2_loss(preds_net[CONTENT_LAYER] - content_feature)/content_feature_size
+        content_loss = tf.nn.l2_loss(preds_net[CONTENT_LAYER] - content_feature)/content_feature_size
 
         style_loss = 0
         for layer_name in STYLE_LAYER_NAMES:
