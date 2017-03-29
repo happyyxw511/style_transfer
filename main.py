@@ -21,6 +21,11 @@ def _get_files(img_dir):
     files = utils.list_files(img_dir)
     return [os.path.join(img_dir,x) for x in files]
 
+saver_path = 'saver/'
+try:
+    os.mkdir(saver_path)
+except Exception:
+    pass
 
 content_image_paths = _get_files(content_image_path)
 train.optimize(style_loss, content_image_paths, shoud_print=True)
