@@ -22,7 +22,11 @@ try:
 except Exception:
     pass
 
-run_config = tf.ConfigProto(log_device_placement=True, allow_soft_placement=True)
+flags = tf.app.flags
+FLAGS = flags.FLAGS
+flags.DEFINE_bool('log_device_placement', False, 'checkout device')
+
+run_config = tf.ConfigProto(log_device_placement=FLAGS.log_device_placement, allow_soft_placement=True)
 run_config.gpu_options.allow_growth=True
 with tf.Session(config=run_config) as sess:
     style_loss = loss_calculation.style_and_content_loss(
