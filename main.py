@@ -25,6 +25,10 @@ except Exception:
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_bool('log_device_placement', False, 'checkout device')
+flags.DEFINE_bool('should_print', True, 'whether we should print loss during training')
+flags.DEFINE_float('learning_rate', 0.001, 'the learning rate for ADAM')
+flags.DEFINE_integer('epochs', 20, 'the epoch for the learning')
+
 
 run_config = tf.ConfigProto(log_device_placement=FLAGS.log_device_placement, allow_soft_placement=True)
 run_config.gpu_options.allow_growth=True
@@ -37,4 +41,9 @@ with tf.Session(config=run_config) as sess:
         style_weight,
         tv_weight)
     content_image_paths = _get_files(content_image_path)
-    train.optimize(sess, style_loss, content_image_paths, shoud_print=True)
+    train.optimize(sess,
+                   style_loss,
+                   content_image_paths,
+                   epochs=FLAGS.epochs,
+                   learning_rate=FLAGS.learning_rate,
+                   shoud_print=FLAGS.should_print)
