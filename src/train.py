@@ -30,11 +30,11 @@ def optimize(sess,
                 X_batch[j] = utils.get_img(path, img_size=(256, 256, 3)).astype(np.float32)
             iterations += 1
             optimizer.run(feed_dict={'X_content_images:0': X_batch})
-            saver = tf.train.Saver()
-            saver.save(sess, save_path)
             if shoud_print:
                 inferred_loss = sess.run([loss], feed_dict={'X_content_images:0': X_batch})
                 infered_losses.append(inferred_loss)
                 if np.mod(iterations, 10) == 0:
+                    saver = tf.train.Saver()
+                    saver.save(sess, save_path)
                     print np.mean(inferred_loss)
                     infered_losses = []
